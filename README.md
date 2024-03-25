@@ -1,4 +1,4 @@
-# UploadDataByJsonFile
+# Vehicle Registration center
 
 This is a vehicle registration center page. admin can add, view, update, and delete the vehicle information
 
