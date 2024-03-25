@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+<style>
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  #login-box {
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  input[type="email"],
+  input[type="password"] {
+    width: calc(100% - 40px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+  input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+<div id="login-box">
+  <h2>Login</h2>
+  <form id="login-form">
+    <input id="username" type="email" name="username" placeholder="Username" required><br>
+    <input id="password" type="password" name="password" placeholder="Password" required><br>
+    <input type="submit" value="Login">
+  </form>
+</div>
+
+<script>
+ let form=document.getElementById("login-form");
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    if(form.username.value!=null&&form.password.value!=null)
+    fetchData(form.username.value,form.password.value);
+    else {
+      alert("Please enter both username and password");
+    }
+  });
+  async function fetchData(username,password){
+    try {
+        let res=await fetch('http://localhost:8080/user/signin',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({username:username,
+        password:password})
+        })
+        // const token = res.headers.get('Authorization')
+        res=await res.json()
+        console.log(res.token)
+        localStorage.setItem("auth",res.token)
+        location="./vehicle.html"
+    } catch (error) {
+      console.log(error)
+      alert("wrong credential");
+    }
+}
+
+</script>
+</body>
+</html>

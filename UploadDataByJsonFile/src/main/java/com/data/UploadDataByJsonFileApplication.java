@@ -9,5 +9,4 @@ public class UploadDataByJsonFileApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UploadDataByJsonFileApplication.class, args);
 	}
-
 }

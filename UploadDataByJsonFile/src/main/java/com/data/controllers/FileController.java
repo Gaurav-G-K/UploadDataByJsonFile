@@ -40,7 +40,5 @@ public class FileController {
 	public ResponseEntity<byte[]> download(@PathVariable Long id){
 		Files file=fileServices.getFile(id);
 		return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.valueOf("txt/plain")).body(file.getFileData());
-		
 	}
-
 }

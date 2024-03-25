@@ -46,13 +46,15 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 	}
 	public String genrateToken(Authentication auth) {
 		SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes());
-		return Jwts.builder()
+		jwt=Jwts.builder()
                 .setSubject("Jwt Token")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 846000000))
                 .claim("email", auth.getName())
                 .claim("authorities", populateAuthorities(auth.getAuthorities()))
                 .signWith(key).compact();
+		System.out.println(jwt);
+		return jwt;
 		
 	}
 	

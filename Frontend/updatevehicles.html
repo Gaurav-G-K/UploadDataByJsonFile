@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            padding: 0;
+            margin: 0;
+            background-color: rgba(175, 168, 33, 0.77);
+        }
+        h1{
+            text-align: center;
+            color: rgb(0, 162, 255);
+        }
+        ul{
+            border: 1px solid black;
+            display: flex;
+            margin: auto;
+            width: 400px;
+            align-items: center;
+            justify-content: space-around;
+        }
+        ul li{
+            list-style: none;
+
+        }
+        a{
+            text-decoration: none;
+            color: blue;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Vehicle Registration Center</h1>
+    <div id="nav">
+        <ul>
+            <li><a href="/vehicle.html">VEHICLES</a></li>
+            <li><a href="#" style="color: green;">UPDATE VEHICLES</a></li>
+            <li><a href="#" id="logout">LOG OUT</a></li>
+        </ul>
+    </div>
+
+
+    <form>
+        <table>
+            <tr>
+                <td>Year</td><td>:</td><td><input type="number" id="year" name="year" min="1900" max="2024" required></td>
+            </tr>
+            <tr>
+                <td>Vehicle type</td><td>:</td><td><input type="text" name="vehicleType" id="vehicleType" required></td>
+            </tr>
+            <tr>
+                <td>drivetrain</td><td>:</td><td><input type="text" id="drivetrain" name="drivetrain" required></td>
+            </tr>
+            <tr>
+                <td>cylinders</td><td>:</td><td><input type="number" id="cylinders" name="cylinders" min="1" required></td>
+            </tr>
+            <tr>
+                <td>body subtype</td><td>:</td><td><input type="text" id="bodySubtype" name="bodySubtype" required></td>
+            </tr>
+            <tr>
+                <td>doors</td><td>:</td><td><input type="number" id="doors" name="doors" min="1" required></td>
+            </tr>
+            <tr>
+                <td>made in</td><td>:</td><td><input type="text" id="madeIn" name="madeIn" required></td>
+            </tr>
+            <tr>
+                <td>trim</td><td>:</td><td><input type="text" id="trim" name="trim" required></td>
+            </tr>
+            <tr>
+                <td>engine</td><td>:</td><td><input type="text" id="engine" name="engine" required></td>
+            </tr>
+            <tr>
+        <td>model</td><td>:</td><td><input type="text" id="model" name="model" required></td>
+            </tr>
+            <tr>
+                <td>engine size</td><td>:</td><td><input type="number" id="engineSize" name="engineSize" min="0" required></td>
+            </tr>
+            <tr>
+                <td>fuel type</td><td>:</td><td><input type="text" id="fuelType" name="fuelType" required></td>
+            </tr>
+            <tr>
+                <td>trim r</td><td>:</td><td><input type="text" id="trimR" name="trimR" required></td>
+            </tr>
+            <tr>
+                <td>make</td><td>:</td><td><input type="text" id="make" name="make" required></td>
+            </tr>
+            <tr>
+                <td>price</td><td>:</td><td><input type="number" id="price" name="price" min="0" required></td>
+            </tr>
+            <tr>
+                <td>seller type</td><td>:</td><td><select id="sellerType" name="sellerType" required>
+                    <option value="">Select Seller Type</option>
+                    <option value="dealer">Dealer</option>
+                    <option value="private">Private</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td>source</td><td>:</td><td><input type="text" id="source" name="source" required></td>
+            </tr>
+            <tr>
+                <td>interior color</td><td>:</td><td><input type="text" id="interiorColor" name="interiorColor" required></td>
+            </tr>
+            <tr>
+                <td>exterior color</td><td>:</td><td><input type="text" id="exteriorColor" name="exteriorColor" required></td>
+            </tr>
+            <tr>
+                <td>vin</td><td>:</td><td><input type="text" id="vin" name="vin" required></td>
+            </tr>
+        </table>
+        <input type="submit" value="submit">
+    </form>
+
+</body>
+<script>
+    let form=document.querySelector("form");
+    form.addEventListener("submit",async function(event) {
+        event.preventDefault();
+        let  data = {
+        year: parseInt(form.year.value),
+        vehicle_type: form.vehicleType.value,
+        drivetrain: form.drivetrain.value,
+        cylinders: parseInt(form.cylinders.value),
+        body_subtype: form.bodySubtype.value,
+        doors: parseInt(form.doors.value),
+        made_in: form.madeIn.value,
+        trim: form.trim.value,
+        engine: form.engine.value,
+        model: form.model.value,
+        engine_size: parseFloat(form.engineSize.value),
+        fuel_type: form.fuelType.value,
+        trim_r: form.trimR.value,
+        make: form.make.value,
+        price: parseFloat(form.price.value),
+        seller_type: form.sellerType.value,
+        source: form.source.value,
+        interior_color: form.interiorColor.value,
+        exterior_color: form.exteriorColor.value,
+        vin: form.vin.value
+    };
+    update(data);
+    })
+
+    async function update(data){
+        try {
+            let res = await fetch('http://localhost:8080/vehicle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("auth")}`
+                },
+                body:JSON.stringify(data)
+            });
+            if (!res.ok) {
+                console.log("something went wrong")
+            } else {
+                res=await res.json();
+                console.log(res);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    document.getElementById("logout").addEventListener("click",()=>{
+        localStorage.setItem("auth","");
+        location="./index.html"
+    })
+</script>
+</html>

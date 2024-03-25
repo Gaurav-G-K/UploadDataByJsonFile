@@ -79,7 +79,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
 				//extracting the word Bearer
 				jwt = jwt.substring(7);
-
+				System.out.println(jwt);
 				
 				SecretKey key= Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes());
 				

@@ -52,7 +52,8 @@ public class SecurityConfig {
 			.authorizeHttpRequests(auth ->{
 				auth
 					.requestMatchers(HttpMethod.POST,"/user/signin").permitAll()
-					.requestMatchers("/files/upload","/files/download/{id}").hasRole("ADMIN");
+//					.requestMatchers("/files/upload","/files/download/{id}").hasRole("ADMIN");
+					.anyRequest().hasRole("ADMIN");
 					})
 				.csrf(csrf -> csrf.disable())
 				.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
