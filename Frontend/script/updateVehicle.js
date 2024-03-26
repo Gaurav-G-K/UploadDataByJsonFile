@@ -1,4 +1,7 @@
-let form=document.querySelector("form");
+document.getElementById('addVehicle').addEventListener('click', function() {
+    document.getElementById('popupForm').style.display = 'block';
+  });
+let form=document.getElementById('vehicleForm');
     form.addEventListener("submit",async function(event) {
         event.preventDefault();
         let  data = {
@@ -24,6 +27,7 @@ let form=document.querySelector("form");
         vin: form.vin.value
     };
     update(data);
+    
     })
 
     async function update(data){
@@ -41,6 +45,8 @@ let form=document.querySelector("form");
             } else {
                 res=await res.json();
                 console.log(res);
+                document.getElementById('popupForm').style.display = 'none';
+                fetchvehicles(1,dataPerPage)
             }
         } catch (error) {
             console.log(error);
@@ -51,3 +57,6 @@ let form=document.querySelector("form");
         localStorage.setItem("auth","");
         location="./index.html"
     })
+    document.querySelector('.closeBtn').addEventListener('click', function() {
+        document.getElementById('popupForm').style.display = 'none';
+      });

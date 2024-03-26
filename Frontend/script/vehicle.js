@@ -1,11 +1,12 @@
-let tbody=document.querySelector("tbody");
-    let form = document.querySelector("form");
+
+    let tbody=document.querySelector("tbody");
+    let fileuploadForm = document.getElementById("fileuploadForm");
     let pagination=document.getElementById("pagination");
     let dataPerPage=20;
     window.addEventListener('load', fetchvehicles(1,dataPerPage));
-    form.addEventListener("submit", async function(event) {
+    fileuploadForm.addEventListener("submit", async function(event) {
         event.preventDefault();
-        let file = form.file.files[0];
+        let file = fileuploadForm.file.files[0];
         if (file) {
             await fetchData(file);
         } else {
