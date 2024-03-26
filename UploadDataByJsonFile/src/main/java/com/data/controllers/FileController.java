@@ -31,8 +31,6 @@ public class FileController {
 	
 	@PostMapping("/upload")
 	public ResponseEntity<List<Vehicles>> upload(@RequestParam("file") MultipartFile file) throws StreamReadException, DatabindException, IOException {
-//		if(!file.getContentType().equals("json/txt"))
-//			return new ResponseEntity<String>("Invalid File formet", HttpStatus.BAD_REQUEST);
 		List<Vehicles> list=fileServices.UploadFile(file);
 		return new ResponseEntity<>(list,HttpStatus.OK);
 	}

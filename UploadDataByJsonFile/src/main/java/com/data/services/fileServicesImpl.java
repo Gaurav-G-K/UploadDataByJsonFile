@@ -4,17 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.data.dto.DataEntry;
 import com.data.dto.Vehicles;
 import com.data.entity.Files;
 import com.data.entity.Vehicle;
+import com.data.exceptions.FileTypeException;
 import com.data.repositry.FilesRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class fileServicesImpl implements fileServices{
 	
@@ -24,7 +23,11 @@ public class fileServicesImpl implements fileServices{
 	
 	private VehicleServices vehicleServices;
 	@Override
-	public List<Vehicles> UploadFile(MultipartFile file) throws IOException {
+	public List<Vehicles> UploadFile(MultipartFile file) throws IOException ,FileTypeException{
+		if(!file.getContentType().equals("text/plain")) {
+			System.out.println(file.getContentType());
+		throw new FileTypeException("please select a text or json file");
+		}
 		ObjectMapper obj=new ObjectMapper();
 		DataEntry datafetch=obj.readValue(file.getInputStream(), DataEntry.class);
 		List<Vehicles> raw=datafetch.getListings();

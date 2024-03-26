@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.data.dto.data;
 import com.data.entity.Vehicle;
 import com.data.services.VehicleServices;
 
@@ -37,7 +38,10 @@ public class VehicleController {
 	}
 	@GetMapping
 	public ResponseEntity<List<Vehicle>> getAllVehicle(){
-		return new ResponseEntity<List<Vehicle>>(vehicleServices.getAllVehicle(),HttpStatus.OK);
-		
+		return new ResponseEntity<List<Vehicle>>(vehicleServices.getAllVehicle(),HttpStatus.OK);	
+	}
+	@GetMapping("/page/{pageNum}/{limit}")
+	public ResponseEntity<data> getProducrPageWise(@PathVariable int pageNum, @PathVariable int limit){
+		return new ResponseEntity<data>(vehicleServices.getProducrByPageWise(pageNum, limit),HttpStatus.OK);
 	}
 }

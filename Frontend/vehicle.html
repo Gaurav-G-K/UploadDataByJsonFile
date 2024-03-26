@@ -104,7 +104,7 @@
 <script>
     let tbody=document.querySelector("tbody");
     let form = document.querySelector("form");
-    window.addEventListener('load', fetchvehicles());
+    window.addEventListener('load', fetchvehicles(1,15));
     form.addEventListener("submit", async function(event) {
         event.preventDefault();
         let file = form.file.files[0];
@@ -125,22 +125,21 @@
                 },
                 body: formData
             });
-            console.log("fetching")
             if (!res.ok) {
-                console.log("res!=200");
-                alert("Upload failed");
+                res=await res.json();
+                alert(res.message);
             } else {
                 alert("File uploaded successfully");
-                fetchvehicles();
+                fetchvehicles(1,15);
             }
         } catch (error) {
             console.log(error);
-            alert("Upload failed. Please try again.");
+            alert(error);
         }
     }
-    async function fetchvehicles(){
+    async function fetchvehicles(pageNum,limit){
         try {
-            let res = await fetch('http://localhost:8080/vehicle', {
+            let res = await fetch(`http://localhost:8080/vehicle/page/${pageNum}/${limit}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem("auth")}`
@@ -149,9 +148,10 @@
             if (!res.ok) {
                 console.log("something went wrong")
             } else {
-                console.log(res)
                 res=await res.json();
-                display(res);
+                console.log(res.total_size)
+                
+                display(res.vehicles);
                 // console.log(res);
             }
         } catch (error) {
@@ -185,6 +185,7 @@
             let td19=document.createElement("td");
             let td20=document.createElement("td");
             let td21=document.createElement("td");
+            let td22=document.createElement("td");
             td1.innerText=v.id;
             td2.innerText=v.year;
             td3.innerText=v.vehicle_type;
@@ -206,7 +207,13 @@
             td19.innerText=v.interior_color;
             td20.innerText=v.exterior_color;
             td21.innerText=v.vin;
-            tr.append(td1,td2,td3,td4,td5,td6,td7,td8,td9,td10,td11,td12,td13,td14,td15,td16,td17,td18,td19,td20,td21)
+            let button=document.createElement("button");
+            button.innerText="DELETE"
+            button.addEventListener("click",()=>{
+                deleteData(v.id);
+            })
+            td22.append(button);
+            tr.append(td1,td2,td3,td4,td5,td6,td7,td8,td9,td10,td11,td12,td13,td14,td15,td16,td17,td18,td19,td20,td21,td22)
             tbody.appendChild(tr);
         })
     }
@@ -214,6 +221,26 @@
         localStorage.setItem("auth","");
         location="./index.html"
     })
+    async function deleteData(id){
+        console.log(id)
+        try {
+            let res = await fetch(`http://localhost:8080/vehicle/`+id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("auth")}`
+                },
+            });
+            console.log(res)
+            if (!res.ok) {
+                console.log("something went wrong")
+            } else {
+                res=await res.json();
+                fetchvehicles();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 </script>
 
 </html>
